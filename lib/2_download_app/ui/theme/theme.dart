@@ -53,7 +53,7 @@ class AppTextStyles {
 ///
 /// Definition of App Theme.
 ///
-ThemeData appTheme = ThemeData(
-  fontFamily: 'Eesti',
-  scaffoldBackgroundColor: Colors.white,
-);
+// ThemeData appTheme = ThemeData(
+//   fontFamily: 'Eesti',
+//   scaffoldBackgroundColor: Colors.white,
+// );

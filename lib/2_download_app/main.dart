@@ -4,9 +4,15 @@ import 'ui/providers/theme_color_provider.dart';
 import 'ui/screens/settings/settings_screen.dart';
 import 'ui/screens/downloads/downloads_screen.dart';
 import 'ui/theme/theme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeColorProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -19,13 +25,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _currentIndex = 1;
 
-  final List<Widget> _pages =  [DownloadsScreen(), SettingsScreen()];
+  final List<Widget> _pages = [DownloadsScreen(), SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeColorProvider>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: appTheme,
+      theme: buildAppTheme(themeProvider),
       home: Scaffold(
         body: _pages[_currentIndex],
 
@@ -36,7 +43,7 @@ class _MyAppState extends State<MyApp> {
               _currentIndex = index;
             });
           },
-          selectedItemColor: currentThemeColor.color,
+          selectedItemColor: themeProvider.mainColor,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Downloads'),
             BottomNavigationBarItem(
@@ -48,4 +55,18 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+ThemeData buildAppTheme(ThemeColorProvider themeProvider) {
+  return ThemeData(
+    fontFamily: 'Eesti',
+
+    primaryColor: themeProvider.mainColor,
+    scaffoldBackgroundColor: themeProvider.backgroundColor,
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: themeProvider.mainColor,
+      foregroundColor: AppColors.text,
+    ),
+  );
 }
